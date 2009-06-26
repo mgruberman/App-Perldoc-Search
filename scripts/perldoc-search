@@ -1,0 +1,53 @@
+#!perl
+use strict;
+use warnings;
+use App::Perldoc::Search;
+require Getopt::Long;
+
+App::Perldoc::Search->run( @ARGV );
+exit;
+
+=head1 NAME
+
+App::Perldoc::Search - Searches the perl documentation for strings
+
+=head1 SYNOPSIS
+
+Search for things documenting C<add_build_element>:
+
+  perldoc-search add_build_element
+
+Results
+
+  perltoc - perl documentation table of contents
+  Module::Build::API - API Reference for Module Authors
+  Module::Build::Cookbook - Examples of Module::Build Usage
+
+Search only some directories or files:
+
+  perldoc-search add_build_element Some/File.pm A/Directory/
+
+=head1 DESCRIPTION
+
+App::Perldoc::Search searches your perl documentation files for
+matches and displays the result to STDOUT.
+
+=head1 OPTIONS
+
+=over
+
+=item -G REGEXP
+
+Matches file names to search. Default is to search all .pod, .pm, .pmc files.
+
+=item --help
+
+Displays this documentation
+
+=back
+
+=head1 SEE ALSO
+
+L<perldoc>, apropos, L<perltoc>, L<App::Perldoc::Search>
+
+=cut
