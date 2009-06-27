@@ -1,4 +1,9 @@
-Revision history for Perl extension App::Perldoc::Search.
+Revision history for Perl extension App::Perldoc::Search at
+http://github.com/jbenjore/App-Perldoc-Search/commits/master.
+
+0.02  Sat Jun 27 08:33:00 2009
+304a4464b38b71f10f34c8866da7e3bab1369d3e Clean up dependency list
 
 0.01  Fri Jun 26 01:10:54 2009
-  - A world in chaos finds a new savior, perldoc-search
+9e60c318ebd5543bb342725f7f4834b2502e65f5 Add META.yml
+c69869d09c07115b04120ce0d294011940d76321 0.01
