@@ -31,7 +31,7 @@ require Pod::Usage;
 require IO::File;
 require App::Perldoc::Search::_Parser;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 
