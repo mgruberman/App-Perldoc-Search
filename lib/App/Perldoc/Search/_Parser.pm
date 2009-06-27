@@ -43,7 +43,9 @@ The extracted name and description
 use strict;
 use warnings;
 no warnings 'uninitialized';
-use parent 'Pod::Parser';
+use vars '@ISA';
+require Pod::Parser;
+@ISA = 'Pod::Parser';
 
 
 =head1 METHODS
