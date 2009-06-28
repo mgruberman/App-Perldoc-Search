@@ -1,18 +1,25 @@
 #!perl
-use Test::More tests => 2;
+use Test::More tests => 4;
 use strict;
 use warnings;
 
 use File::Spec::Functions qw( catfile );
 use File::Basename qw( dirname );
+sub search_ok;
 
-my $search = catfile( dirname( $0 ), '../scripts/perldoc-search');
+my $search = catfile( dirname( $0 ), '../script/perldoc-search');
 
-# Try searching for Module::Build
-my $mbuild = `$^X -Mblib $search Module::Build`;
-like( $mbuild, qr/^Module::Build/m, 'Found Module::Build' );
+search_ok 'add_build_element', qr/^Module::Build/m, 'Found Module::Build';
 
 # echo -n 'Try searching for something that probably doesn'\''t exist' | md5
 # dc098fbcf3f9bf8ba7898addba4591cb
-my $md5 = `$^X -Mblib dc098fbcf3f9bf8ba7898addba4591cb`;
-is( $md5, '', q(Didn't find my unlikely md5sum) );
+search_ok 'dc098fbcf3f9bf8ba7898addba4591cb', qr/^$/, "Couldn't find dc098fbcf3f9bf8ba7898addba4591cb";
+
+
+sub search_ok {
+  my ( $phrase, $expected, $test_name ) = @_;
+  my $cmd = "$^X -Mblib $search $phrase";
+  my $result = `$cmd`;
+  is( $?, 0, "$test_name: $cmd" );
+  like( $result, $expected, $test_name );
+}
