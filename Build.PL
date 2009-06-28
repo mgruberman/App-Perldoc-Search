@@ -21,7 +21,7 @@ my $build = Module::Build->new(
         # CPAN
     },
     scripts => [qw[
-        scripts/perldoc-search
+        script/perldoc-search
     ]],
 );
 $build->create_build_script;
