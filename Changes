@@ -1,7 +1,12 @@
 Revision history for Perl extension App::Perldoc::Search at
 http://github.com/jbenjore/App-Perldoc-Search/commits/master.
 
+0.04  Sun Jun 28 09:04:00 2009
+7f9c4f1033e7f7601f4520b6fd998fed43460346 Move scripts/ to script/ at Shlomi Fish's advice to get search.cpan.org to index the script
+
 0.03  Sat Jun 27 12:49:00 2009
+2c9629d437bcfad319371a5f3134cabf5e2bfaf5 Update Changes
+e9346b9cef1d6ce947b478e01b1b20b0d1fb3317 0.03
 35853a9fca807b78c5740d3a12a48817a4043ab9 Don't depend on parent, do ISA manually
 
 0.02  Sat Jun 27 08:33:00 2009
