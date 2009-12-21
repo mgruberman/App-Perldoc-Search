@@ -6,6 +6,10 @@ use Module::Build;
 my $build = Module::Build->new(
     module_name => 'App::Perldoc::Search',
     license => 'perl',
+    build_requires => {
+        'Test::More' => 0,
+        'IPC::Run' => 0,
+    },
     requires => {
         # Core
         'perl' => '5.6.0',
