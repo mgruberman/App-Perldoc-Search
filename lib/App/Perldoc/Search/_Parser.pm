@@ -40,12 +40,12 @@ The extracted name and description
 
 
 
+use 5.006;
 use strict;
 use warnings;
 no warnings 'uninitialized';
-use vars '@ISA';
-require Pod::Parser;
-@ISA = 'Pod::Parser';
+use Pod::Parser ();
+our @ISA = 'Pod::Parser';
 
 
 =head1 METHODS

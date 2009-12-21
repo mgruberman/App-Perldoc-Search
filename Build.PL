@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-use 5.006_000;
 use strict;
+use 5.006;
 use warnings;
 use Module::Build;
 my $build = Module::Build->new(

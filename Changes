@@ -1,7 +1,12 @@
 Revision history for Perl extension App::Perldoc::Search at
 http://github.com/jbenjore/App-Perldoc-Search/commits/master.
 
+0.05  Sun Jun 28 15:35:00 2009
+a6c8a88e119f6632bcc3efd9c38cca216979f550 0.05
+8b0ba9c0d5b082c6386ac6c10604e22123d0dadf Check for perdoc-search exit code
+
 0.04  Sun Jun 28 09:04:00 2009
+82049ab4bf58c90e8de2ca144ba5b3d8cc6438a6 Update Changes
 7f9c4f1033e7f7601f4520b6fd998fed43460346 Move scripts/ to script/ at Shlomi Fish's advice to get search.cpan.org to index the script
 
 0.03  Sat Jun 27 12:49:00 2009

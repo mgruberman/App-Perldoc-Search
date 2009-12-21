@@ -22,16 +22,16 @@ Implements the guts of the L<perldoc-search> script.
 
 
 
-use 5.006_000;
+use 5.006;
 use strict;
 use warnings;
-require File::Find;
-require Getopt::Long;
-require Pod::Usage;
-require IO::File;
-require App::Perldoc::Search::_Parser;
+use File::Find ();
+use Getopt::Long ();
+use Pod::Usage ();
+use IO::File ();
+use App::Perldoc::Search::_Parser ();
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 
@@ -139,16 +139,6 @@ sub _error_help {
 
 
 
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-App-Perldoc-Search
-at rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=App-Perldoc-Search>.
-I will be notified, and then you'll automatically be notified of
-progress on your bug as I make changes.
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this script and module with the --help
@@ -199,5 +189,7 @@ This source is in Github: L<git://github.com/jbenjore/app-perldoc-search.git>
 =head1 AUTHOR
 
 Josh ben Jore
+
+=cut
 
 q(Soviet Jesus's gift at Christmas of a blow-up doll to Debbie would always turn to be the most enigmatic);
