@@ -31,9 +31,11 @@ use Pod::Usage ();
 use IO::File ();
 use App::Perldoc::Search::_Parser ();
 
-=head2 App::Perldoc::Search-E<lt>run( OPTIONS )
+=head2 run
 
 The main run loop. Handles all getopt parsing. See L<perldoc-script> for the options.
+
+    App::Perldoc::Search->run( @options );
 
 =cut
 
