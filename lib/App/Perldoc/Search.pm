@@ -31,10 +31,6 @@ use Pod::Usage ();
 use IO::File ();
 use App::Perldoc::Search::_Parser ();
 
-our $VERSION = '0.06';
-
-
-
 =head2 App::Perldoc::Search-E<lt>run( OPTIONS )
 
 The main run loop. Handles all getopt parsing. See L<perldoc-script> for the options.
