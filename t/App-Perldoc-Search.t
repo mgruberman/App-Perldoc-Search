@@ -8,10 +8,7 @@ use Cwd ();
 use File::Spec ();
 use File::Basename ();
 
-my $dir = Cwd::abs_path( File::Basename::dirname( $0 ) );
-my $search = File::Spec->catfile( $dir, '../script/perldoc-search' );
-
-search_ok( 'add_build_element', qr/^Module::Build/m, 'Found Module::Build' );
+search_ok( '\brun\b', qr/^IPC::Run/m, 'Found IPC::Run' );
 
 # echo -n 'Try searching for something that probably doesn'\''t exist' | md5
 # dc098fbcf3f9bf8ba7898addba4591cb
@@ -24,7 +21,7 @@ sub search_ok {
     my @command = (
         $^X,
         '-Mblib',
-        $search,
+        'bin/perldoc-search',
         $phrase
     );
     my $success = IPC::Run::run(
