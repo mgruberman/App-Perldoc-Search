@@ -40,6 +40,10 @@ matches and displays the result to STDOUT.
 
 Matches file names to search. Default is to search all .pod, .pm, .pmc files.
 
+=item -l
+
+Lists matched file names.
+
 =item --help
 
 Displays this documentation

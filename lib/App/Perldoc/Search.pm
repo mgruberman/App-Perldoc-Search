@@ -45,7 +45,8 @@ sub run {
     my $file_match_rx = qr/\.p(?:od|mc?)$/;
     Getopt::Long::GetOptions(
         'G=s'   => sub { $file_match_rx = qr/$_[1]/ },
-        'help'  => \ &_help )
+        'help'  => \ &_help,
+        'l'     => \ my $list_files )
       or _error_help();
 
     # Validate pattern.
@@ -93,8 +94,13 @@ sub run {
             my $name = $searcher->{name} || $_;
 
             # Report.
-            print "$name\n"
-                or warn "Can't write: $!";
+            if ($list_files) {
+                print "$_\n";
+            }
+            else {
+                print "$name\n"
+                    or warn "Can't write: $!";
+            }
         }},
         @search_path );
 
