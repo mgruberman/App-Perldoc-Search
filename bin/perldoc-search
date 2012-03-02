@@ -1,11 +1,9 @@
-#!perl
-use strict;
-use warnings;
-use App::Perldoc::Search;
-require Getopt::Long;
-
+#!/usr/bin/perl
+require App::Perldoc::Search;
 App::Perldoc::Search->run( @ARGV );
 exit;
+
+__END__
 
 =head1 NAME
 
