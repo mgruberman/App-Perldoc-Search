@@ -15,6 +15,7 @@ sub run {
     local *ARGV = \ @argv;
     my $file_match_rx = qr/\.p(?:od|mc?)$/;
     Getopt::Long::GetOptions(
+        'slow'  => \ my $slow_match,
         'G=s'   => sub { $file_match_rx = qr/$_[1]/ },
         'help'  => \ &_help,
         'l'     => \ my $list_files )
@@ -69,25 +70,34 @@ sub run {
         # Try a fast match to avoid parsing.
         next if $text !~ $pattern;
 
-        # Prepare for searching.
-        my $searcher = App::Perldoc::Search::_Parser->new;
-        $searcher->{pattern} = $pattern;
+        my ($name);
+        if ($slow_match) {
+            # Prepare for searching.
+            my $searcher = App::Perldoc::Search::_Parser->new;
+            $searcher->{pattern} = $pattern;
 
-        # Search the document.
-        IO::Handle->input_record_separator( "\n" );
-        $fh->seek( 0, 0 );
-        $searcher->parse_from_filehandle( $fh );
-        return if ! $searcher->{matched};
+            # Search the document.
+            IO::Handle->input_record_separator( "\n" );
+            $fh->seek( 0, 0 );
+            $searcher->parse_from_filehandle( $fh );
+            next if ! $searcher->{matched};
 
-        # Extract document name.
-        my $name = $searcher->{name} || $file;
+            # Extract document name.
+            $name = $searcher->{name};
+        }
+        else {
+            ($name) = $text =~ /^=head\d+\s+NAME[^\r\n]*[\r\n]+(\S+)/m;
+        }
 
         # Report.
         if ($list_files) {
             print "$file\n";
         }
         else {
-            print "$name\n"
+            my $msg = ($name && $file)
+                ? "$name - $file\n"
+                : "$file\n";
+            print $msg
                 or warn "Can't write: $!";
         }
 

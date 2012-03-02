@@ -46,6 +46,11 @@ Lists matched file names.
 
 Displays this documentation
 
+=item --slow
+
+Do a slower search which parses embedded documentation to reject false
+positives and more accurately extract the document's title.
+
 =back
 
 =head1 SEE ALSO
