@@ -7,7 +7,7 @@ __END__
 
 =head1 NAME
 
-App::Perldoc::Search - Searches the perl documentation for strings
+perldoc-search - Searches perl documentation
 
 =head1 SYNOPSIS
 
