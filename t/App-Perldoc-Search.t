@@ -2,7 +2,7 @@
 use Test::More tests => 4;
 use strict;
 
-search_ok( 'run', qr/^IPC::Run/m, 'Found IPC::Run' );
+search_ok( 'run', qr/^strict/m, 'Found strict' );
 
 # echo -n 'Try searching for something that probably doesn'\''t exist' | md5
 # dc098fbcf3f9bf8ba7898addba4591cb
