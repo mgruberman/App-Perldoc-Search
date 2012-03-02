@@ -58,8 +58,8 @@ sub run {
     for my $file ( @files ) {
         # Open the documentation.
         my $fh = IO::File->new;
-        $fh->open( $file )
-            or return; # TODO
+        $fh->open( $file, '<' )
+            or next; # TODO
 
         # Read the documentation.
         my $text;
@@ -67,7 +67,7 @@ sub run {
         $text = $fh->getline;
 
         # Try a fast match to avoid parsing.
-        return if $text !~ $pattern;
+        next if $text !~ $pattern;
 
         # Prepare for searching.
         my $searcher = App::Perldoc::Search::_Parser->new;
