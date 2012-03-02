@@ -1,14 +1,8 @@
 #!perl
-use Test::More tests => 6;
+use Test::More tests => 4;
 use strict;
-use warnings;
 
-use IPC::Run ();
-use Cwd ();
-use File::Spec ();
-use File::Basename ();
-
-search_ok( '\brun\b', qr/^IPC::Run/m, 'Found IPC::Run' );
+search_ok( 'run', qr/^IPC::Run/m, 'Found IPC::Run' );
 
 # echo -n 'Try searching for something that probably doesn'\''t exist' | md5
 # dc098fbcf3f9bf8ba7898addba4591cb
@@ -18,19 +12,10 @@ search_ok( 'dc098fbcf3f9bf8ba7898addba4591cb', qr/^$/, "Couldn't find dc098fbcf3
 sub search_ok {
     my ( $phrase, $expected, $test_name ) = @_;
 
-    my @command = (
-        $^X,
-        '-Mblib',
-        'bin/perldoc-search',
-        $phrase
-    );
-    my $success = IPC::Run::run(
-        \ @command,
-        '>',  \ my $stdout,
-        '2>', \ my $stderr,
-    );
+    my $stdout = `$^X -Mblib bin/perldoc-search $phrase`;
 
-    ok( $success, "@command" );
-    is( $stderr, '', "No errors" );
+    is( $?, 0, "Didn't die" );
     like( $stdout, $expected, $test_name );
+
+    return;
 }
