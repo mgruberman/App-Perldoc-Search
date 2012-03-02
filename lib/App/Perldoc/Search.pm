@@ -1,43 +1,12 @@
 package App::Perldoc::Search;
 
-=head1 NAME
-
-App::Perldoc::Search - implementation for perldoc-search
-
-=head1 SYNOPSIS
-
-  App::Perldoc::Search->run( 'thing_to_search_for' )
-
-  App::Perldoc::Search->run( '--help' )
-
-  App::Perldoc::Search->run( '-G' => '\.pm', 'thing_to_search_for' )
-
-=head1 DESCRIPTION
-
-Implements the guts of the L<perldoc-search> script.
-
-=head1 METHODS
-
-=cut
-
-
-
 use 5.006;
 use strict;
-use warnings;
-use File::Find ();
-use Getopt::Long ();
-use Pod::Usage ();
-use IO::File ();
-use App::Perldoc::Search::_Parser ();
-
-=head2 run
-
-The main run loop. Handles all getopt parsing. See L<perldoc-script> for the options.
-
-    App::Perldoc::Search->run( @options );
-
-=cut
+require File::Find;
+require Getopt::Long;
+require Pod::Usage;
+require IO::File;
+require App::Perldoc::Search::_Parser;
 
 sub run {
     my ( $class, @argv ) = @_;
@@ -61,61 +30,71 @@ sub run {
     my @search_path = @ARGV ? @ARGV : @INC;
 
     # Search all files.
-    File::Find::find({
-        follow_fast => 1,
-        no_chdir => 1,
-        wanted => sub {
-            return if
-                ! /$file_match_rx/
-                || ! -f;
-
-            # Open the documentation.
-            my $fh = IO::File->new;
-            $fh->open( $_ )
-                or return; # TODO
-
-            # Read the documentation.
-            my $text;
-            IO::Handle->input_record_separator( undef );
-            $text = $fh->getline;
-
-            # Try a fast match to avoid parsing.
-            return if $text !~ $pattern;
-
-            # Prepare for searching.
-            my $searcher = App::Perldoc::Search::_Parser->new;
-            $searcher->{pattern} = $pattern;
-
-            # Search the document.
-            IO::Handle->input_record_separator( "\n" );
-            $fh->seek( 0, 0 );
-            $searcher->parse_from_filehandle( $fh );
-            return if ! $searcher->{matched};
-
-            # Extract document name.
-            my $name = $searcher->{name} || $_;
-
-            # Report.
-            if ($list_files) {
-                print "$_\n";
+    my @files;
+    File::Find::find(
+        {
+            follow_fast => 1,
+            no_chdir => 1,
+            wanted => sub {
+                return if
+                    ! /$file_match_rx/
+                    || ! -f
+                    || ! -r _;
+                push @files, $_;
             }
-            else {
-                print "$name\n"
-                    or warn "Can't write: $!";
-            }
-        }},
-        @search_path );
+        },
+        @search_path
+    );
+
+    {
+        my %seen;
+        @files =
+            sort
+            grep { !$seen{$_}++ }
+            @files;
+        undef %seen;
+    }
+
+    for my $file ( @files ) {
+        # Open the documentation.
+        my $fh = IO::File->new;
+        $fh->open( $file )
+            or return; # TODO
+
+        # Read the documentation.
+        my $text;
+        IO::Handle->input_record_separator( undef );
+        $text = $fh->getline;
+
+        # Try a fast match to avoid parsing.
+        return if $text !~ $pattern;
+
+        # Prepare for searching.
+        my $searcher = App::Perldoc::Search::_Parser->new;
+        $searcher->{pattern} = $pattern;
+
+        # Search the document.
+        IO::Handle->input_record_separator( "\n" );
+        $fh->seek( 0, 0 );
+        $searcher->parse_from_filehandle( $fh );
+        return if ! $searcher->{matched};
+
+        # Extract document name.
+        my $name = $searcher->{name} || $file;
+
+        # Report.
+        if ($list_files) {
+            print "$file\n";
+        }
+        else {
+            print "$name\n"
+                or warn "Can't write: $!";
+        }
+
+    }
 
     return;
 }
-
-
-
-=head2 _help()
-
-Prints the manual and exits
-
-=cut
 
 sub _help {
     Pod::Usage::pod2usage(
@@ -124,12 +103,6 @@ sub _help {
         -output  => \*STDOUT );
     # NOT REACHED
 }
-
-=head2 _error_help()
-
-Prints the manual to STDERR and exits with 2.
-
-=cut
 
 sub _error_help {
     Pod::Usage::pod2usage(
@@ -140,60 +113,53 @@ sub _error_help {
     # NOT REACHED
 }
 
+q(Soviet Jesus's gift at Christmas of a blow-up doll to Debbie would always turn to be the most enigmatic);
 
+__END__
 
+=head1 NAME
 
-=head1 SUPPORT
+App::Perldoc::Search - implementation for perldoc-search
 
-You can find documentation for this script and module with the --help
-parameter and with perldoc.
+=head1 SYNOPSIS
 
-  perldoc-search --help
-  perldoc App::Perldoc::Search
+  App::Perldoc::Search->run( 'thing_to_search_for' )
 
-You can also look for information at:
+  App::Perldoc::Search->run( '--help' )
 
-=over
+  App::Perldoc::Search->run( '-G' => '\.pm', 'thing_to_search_for' )
 
-=item * RT: CPAN's request tracker
+=head1 DESCRIPTION
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Perldoc-Search>
+Implements the guts of the L<perldoc-search> script.
 
-=item * AnnoCPAN: Annotated CPAN documentation
+=head1 METHODS
 
-L<http://annocpan.org/dist/App-Perldoc-Search>
+=head2 run
 
-=item * CPAN Ratings
+The main run loop. Handles all getopt parsing. See L<perldoc-script> for the options.
 
-L<http://cpanratings.perl.org/d/App-Perldoc-Search>
+    App::Perldoc::Search->run( @options );
 
-=item * Search CPAN
+=head2 _help()
 
-L<http://search.cpan.org/dist/App-Perldoc-Search/>
+Prints the manual and exits
 
-=back
+=head2 _error_help()
 
-
+Prints the manual to STDERR and exits with 2.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009 Josh ben Jore, all rights reserved.
+Copyright 2009, 2011 Josh ben Jore, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
-
 
 =head1 SOURCE AVAILABILITY
 
 This source is in Github: L<git://github.com/jbenjore/app-perldoc-search.git>
 
-
-
 =head1 AUTHOR
 
-Josh ben Jore
-
-=cut
-
-q(Soviet Jesus's gift at Christmas of a blow-up doll to Debbie would always turn to be the most enigmatic);
+Josh Jore
